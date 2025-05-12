@@ -2,25 +2,27 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>랜덤 카드뉴스</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="card-container">
+
+  <div class="card-wrapper">
     <div class="card" id="card">
-      <div class="front">
+      <div class="face front">
         <img id="card-img" src="" alt="card image">
       </div>
-      <div class="back">
-        <p id="card-text"></p>
+      <div class="face back">
+        <div class="text-container"><p id="card-text"></p></div>
       </div>
     </div>
-    <div class="controls">
-      <button id="prev">← 이전</button>
-      <button id="next">다음 랜덤 →</button>
-    </div>
+  </div>
+
+  <div class="controls">
+    <button id="prev">← 이전</button>
+    <button id="next">다음 →</button>
   </div>
 
   <script src="script.js"></script>
