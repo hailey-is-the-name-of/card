@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,13 +8,14 @@
 </head>
 <body>
 
-  <div class="card-wrapper">
-    <div class="card" id="card">
+  <div class="card-wrapper" id="wrapper" style="visibility:hidden;">
+    <!-- 템플릿 카드: JS에서 clone해서 사용할 것 -->
+    <div class="card" id="template-card">
       <div class="face front">
-        <img id="card-img" src="" alt="card image">
+        <img class="card-img" src="" alt="card image">
       </div>
       <div class="face back">
-        <div class="text-container"><p id="card-text"></p></div>
+        <div class="text-container"><p class="card-text"></p></div>
       </div>
     </div>
   </div>
@@ -27,4 +27,14 @@
 
   <script src="script.js"></script>
 </body>
+
+
+<footer style="
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+">
+  <a href='https://theminjoodaegu.co.kr/'><img src="150_png_dgsd_logo.png" width="150" alt="더불어민주당 대구광역시당 로고"></a>
+</footer>
 </html>

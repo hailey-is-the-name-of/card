@@ -1,31 +1,44 @@
-/* style.css */
+/* style.css 에서 body 부분만 교체 */
 body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  /* 고급스러운 로얄블루 톤 그라데이션 */
-  background: linear-gradient(135deg, #2a3eb1, #4169e1);
-  color: #fff;
-  font-family: 'Noto Sans KR', sans-serif;
+  margin:0; padding:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+  /* 부드러운 블루→화이트 그라데이션 */
+  background: linear-gradient(
+    to bottom,
+    #5A9BD5 0%,
+    #5A9BD5 60%,
+    #fff     100%
+  );
+  color:#fff;
+  font-family:'Noto Sans KR', sans-serif;
 }
-
 
 .card-wrapper {
   position: relative;
-  perspective:1000px;
-  margin-bottom:20px;
+  perspective: 1000px;
+  margin-bottom: 20px;
+
+  /* ⬇ 여기만 추가 */
+  display: flex;
+  justify-content: center;  /* 가로 중앙 */
+  align-items: center;      /* 세로 중앙 */
+  width: 100%;              /* wrapper가 화면 전체 너비를 가짐 */
+  height: auto;             /* 높이는 카드 크기에 맞춰 자동 */
 }
 
+/* 카드 자체는 relative 로 두세요 */
 .card {
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s ease;
   cursor: pointer;
+  /* margin 없이, wrapper의 flex가 알아서 중앙 정렬 */
 }
+
 
 .card.flipped {
   transform: rotateY(180deg);
@@ -37,12 +50,11 @@ body {
 }
 
 .front img {
-  display:block;
-  max-width:90vw;  /* 최대 너비 */
-  max-height:80vh; /* 최대 높이 */
-  width:auto;
-  height:auto;
-  border-radius:12px;
+  max-width: 90vw;   /* 모바일에서는 화면 너비의 90% 만큼 */
+  max-height: 70vh;  /* 화면 높이의 70% 만큼 */
+  width: auto;
+  height: auto;
+  border-radius: 12px;
 }
 
 .back {
