@@ -1,91 +1,111 @@
-/* style.css 에서 body 부분만 교체 */
-body {
+/* style.css */
+html, body {
   margin:0; padding:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  height:100vh;
-  /* 부드러운 블루→화이트 그라데이션 */
+  width:100%; height:100%;
+}
+body {
+  display: flex;
+  justify-content: center;  /* 가로 중앙 */
+  align-items: center;      /* 세로 중앙 */
   background: linear-gradient(
     to bottom,
     #5A9BD5 0%,
     #5A9BD5 60%,
     #fff     100%
   );
-  color:#fff;
-  font-family:'Noto Sans KR', sans-serif;
+  font-family:'Noto Sans KR',sans-serif;
 }
 
-.card-wrapper {
-  position: relative;
-  perspective: 1000px;
-  margin-bottom: 20px;
-
-  /* ⬇ 여기만 추가 */
+.container {
   display: flex;
-  justify-content: center;  /* 가로 중앙 */
-  align-items: center;      /* 세로 중앙 */
-  width: 100%;              /* wrapper가 화면 전체 너비를 가짐 */
-  height: auto;             /* 높이는 카드 크기에 맞춰 자동 */
+  flex-direction: column;
+  align-items: center;  /* 컨테이너 안 요소들 가로 중앙 */
+  gap: 20px;            /* 카드와 버튼 사이 간격 */
 }
 
-/* 카드 자체는 relative 로 두세요 */
+/* 카드 래퍼: 카드 하나만 정확히 중앙에 */
+.card-wrapper {
+  perspective: 1000px;
+
+  display: flex;           
+  justify-content: center;  
+  align-items: center;      
+}
+
+/* 카드 자체 */
 .card {
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s ease;
   cursor: pointer;
-  /* margin 없이, wrapper의 flex가 알아서 중앙 정렬 */
 }
 
-
+/* 뒤집힘 */
 .card.flipped {
   transform: rotateY(180deg);
 }
 
+/* 앞/뒤 공통 */
 .face {
-  position:absolute; top:0; left:0;
+  position:absolute;
+  top:0; left:0;
   backface-visibility: hidden;
 }
 
-.front img {
-  max-width: 90vw;   /* 모바일에서는 화면 너비의 90% 만큼 */
-  max-height: 70vh;  /* 화면 높이의 70% 만큼 */
-  width: auto;
-  height: auto;
+/* 앞면 이미지 */
+.front .card-img {
+  display: block;
+  max-width: 90vw;
+  max-height: 75vh;
+  width: auto; height: auto;
   border-radius: 12px;
 }
 
+/* 뒷면 */
 .back {
   transform: rotateY(180deg);
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  width:100%; height:100%;
+  display:flex; justify-content:center; align-items:center;
   background:#2a2a2a;
   border-radius:12px;
 }
-
 .text-container {
   padding:20px;
   overflow-y:auto;
-  max-height:80vh;
+  max-height:75vh;
+  color:#fff;
 }
 
+/* 버튼 그룹 */
+.controls {
+  display: flex;
+  justify-content:center;
+  gap: 10px;
+}
 .controls button {
-  margin: 0 10px;
-  padding:10px 20px;
+  padding:8px 16px;
   border:2px solid #fff;
   background:transparent;
   color:#fff;
   border-radius:25px;
   cursor:pointer;
   transition:0.3s;
+  font-size:1rem;
 }
-
 .controls button:hover {
   background:#fff;
   color:#333;
+}
+
+/* 모바일 대응 */
+@media (max-width:600px) {
+  .front .card-img,
+  .text-container {
+    max-width:90vw;
+    max-height:70vh;
+  }
+  .controls button {
+    padding:6px 12px;
+    font-size:0.9rem;
+  }
 }

@@ -1,33 +1,212 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>랜덤 카드뉴스</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>#이재명 말모이</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #fff;
+      font-family: 'Noto Sans KR', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    #image-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #image-wrapper img {
+      position: absolute;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.95);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      left: 50%;
+      top: 50%;
+      border-radius: 16px; /* ✅ 모서리 둥글게 */
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* ✅ 드롭쉐도 */
+      background: white; /* ✅ 이미지 로딩 전에도 깔끔 */
+    }
+
+    #image-wrapper img.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      z-index: 1;
+    }
+
+
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      background: #111;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #444;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: default;
+    }
+
+    .share-btn {
+      background: #FEE500; /* 카카오 공식 노랑 */
+      color: #000;
+      padding: 16px 26px;
+      border-radius: 25px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .share-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+
+  </style>
 </head>
 <body>
 
-  <div class="card-wrapper" id="wrapper" style="visibility:hidden;">
-    <!-- 템플릿 카드: JS에서 clone해서 사용할 것 -->
-    <div class="card" id="template-card">
-      <div class="face front">
-        <img class="card-img" src="" alt="card image">
-      </div>
-      <div class="face back">
-        <div class="text-container"><p class="card-text"></p></div>
-      </div>
-    </div>
+  <h1>#이재명 말모이</h1>
+
+  <div id="image-wrapper">
+    <img id="img1" src="" alt="">
+    <img id="img2" src="" alt="">
   </div>
 
-  <div class="controls">
-    <button id="prev">← 이전</button>
-    <button id="next">다음 →</button>
+  <div class="nav-buttons">
+    <button id="prev-btn" disabled>← 이전</button>
+    <button id="next-btn">다음 →</button>
   </div>
 
-  <script src="script.js"></script>
+  <div class="share-button">
+<button class="share-btn" onclick="shareToKakao()">카카오톡으로 공유하기</button>
+  </div>
+
+  <script>
+    Kakao.init('🔑YOUR_KAKAO_JAVASCRIPT_KEY'); // 🔑 본인의 키로 바꾸기
+
+    const totalImages = 64;
+    let imageOrder = [];
+    let currentIndex = 0;
+    let currentVisible = 0;
+
+    const images = [
+      document.getElementById("img1"),
+      document.getElementById("img2")
+    ];
+
+    function shuffleImages() {
+      imageOrder = Array.from({ length: totalImages }, (_, i) => i + 1);
+      for (let i = imageOrder.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [imageOrder[i], imageOrder[j]] = [imageOrder[j], imageOrder[i]];
+      }
+    }
+
+    function getQueryImageIndex() {
+      const params = new URLSearchParams(window.location.search);
+      const imgNum = parseInt(params.get('img'));
+      if (!isNaN(imgNum)) {
+        shuffleImages();
+        imageOrder = [imgNum, ...imageOrder.filter(n => n !== imgNum)];
+        return 0;
+      }
+      return 0;
+    }
+
+    function showImage() {
+      const imageNum = imageOrder[currentIndex];
+      const nextIndex = 1 - currentVisible;
+      const currentImg = images[currentVisible];
+      const nextImg = images[nextIndex];
+
+      nextImg.src = `images/${imageNum}.jpg`;
+      nextImg.onload = () => {
+        nextImg.classList.add("active");
+        currentImg.classList.remove("active");
+        currentVisible = nextIndex;
+      };
+
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled = currentIndex === imageOrder.length - 1;
+    }
+
+    document.getElementById("prev-btn").addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showImage();
+      }
+    });
+
+    document.getElementById("next-btn").addEventListener("click", () => {
+      if (currentIndex < imageOrder.length - 1) {
+        currentIndex++;
+        showImage();
+      }
+    });
+
+    function shareToKakao() {
+      const imageNum = imageOrder[currentIndex];
+      const imageUrl = `${location.origin}${location.pathname}?img=${imageNum}`;
+      Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '📸 지금 보고 있는 이미지',
+          description: '랜덤 갤러리에서 감상 중',
+          imageUrl: `${location.origin}/image/${imageNum}.jpg`,
+          link: {
+            mobileWebUrl: imageUrl,
+            webUrl: imageUrl
+          }
+        }
+      });
+    }
+
+    // init
+    shuffleImages();
+    currentIndex = getQueryImageIndex();
+    showImage();
+  </script>
 </body>
-
 
 <footer style="
   display: flex;
@@ -36,5 +215,6 @@
   padding: 20px 0;
 ">
   <a href='https://theminjoodaegu.co.kr/'><img src="150_png_dgsd_logo.png" width="150" alt="더불어민주당 대구광역시당 로고"></a>
-</footer>
+</footer> 
+
 </html>
