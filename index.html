@@ -205,22 +205,22 @@
       }
     });
 
-    function shareToKakao() {
-      const imageNum = imageOrder[currentIndex];
-      const imageUrl = `${location.origin}${location.pathname}?img=${imageNum}`;
-      Kakao.Link.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: '📸 지금 보고 있는 이미지',
-          description: '랜덤 갤러리에서 감상 중',
-          imageUrl: `${location.origin}/image/${imageNum}.jpg`,
-          link: {
-            mobileWebUrl: imageUrl,
-            webUrl: imageUrl
+      function shareToKakao() {
+        const imageNum = imageOrder[currentIndex];
+        const imageUrl = `${location.origin}${location.pathname}?img=${imageNum}`;
+        Kakao.Link.sendDefault({
+          objectType: 'feed',
+          content: {
+            title: '이재명의 말을 들어보세요!',
+            description: '#이재명 말모이 모음 페이지',
+            imageUrl: `${location.origin}/images/${imageNum}.jpg`, // 이미지 경로 주의: "images"
+            link: {
+              mobileWebUrl: imageUrl,
+              webUrl: imageUrl
+            }
           }
-        }
-      });
-    }
+        });
+      }
 
     // init
     shuffleImages();
