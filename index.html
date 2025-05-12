@@ -207,20 +207,23 @@
 
       function shareToKakao() {
         const imageNum = imageOrder[currentIndex];
-        const imageUrl = `${location.origin}${location.pathname}?img=${imageNum}`;
+        const shareUrl = `https://bluenew.life/share/${imageNum}.html`;
+        const imageUrl = `https://bluenew.life/card/images/${imageNum}.jpg`;
+
         Kakao.Link.sendDefault({
           objectType: 'feed',
           content: {
             title: '이재명의 말을 들어보세요!',
             description: '#이재명 말모이 모음 페이지',
-            imageUrl: `${location.origin}/images/${imageNum}.jpg`, // 이미지 경로 주의: "images"
+            imageUrl: imageUrl,
             link: {
-              mobileWebUrl: imageUrl,
-              webUrl: imageUrl
+              mobileWebUrl: shareUrl,
+              webUrl: shareUrl
             }
           }
         });
       }
+
 
     // init
     shuffleImages();
